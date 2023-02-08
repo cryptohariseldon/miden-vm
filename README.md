@@ -4,7 +4,7 @@
 <img src="https://github.com/0xPolygonMiden/miden-vm/workflows/CI/badge.svg?branch=main">
 <a href="https://crates.io/crates/miden"><img src="https://img.shields.io/crates/v/miden"></a>
 
-A STARK-based virtual machine.
+A STARK-based virtual machine. Modified specifically for compatibility with Solana by Zilch.
 
 **WARNING:** This project is in an alpha stage. It has not been audited and may contain bugs and security flaws. This implementation is NOT ready for production use.
 

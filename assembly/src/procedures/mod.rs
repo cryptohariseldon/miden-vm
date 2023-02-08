@@ -106,13 +106,13 @@ impl fmt::Display for ProcedureId {
     }
 }
 
-impl ProcedureId {
+impl<'a> ProcedureId {
     /// Truncated length of the id
     pub const SIZE: usize = 24;
 
     /// Base kernel path
     /// TODO better use `MODULE_PATH_DELIM`. maybe require `const_format` crate?
-    pub const KERNEL_PATH: &str = "::sys";
+    pub const KERNEL_PATH: &'a str = "::sys";
 
     /// Creates a new procedure id from its path, composed by module path + name identifier.
     ///

@@ -8,6 +8,24 @@ A STARK-based virtual machine. Modified specifically for compatibility with Sola
 
 **WARNING:** This project is in an alpha stage. It has not been audited and may contain bugs and security flaws. This implementation is NOT ready for production use.
 
+#CLI- testing
+
+install as executable:
+
+`cargo build --release --features executable`
+
+Generate proof for fib-8 to file:
+
+`./target/release/miden prove -a miden/examples/fib/fib.masm -n 1    `
+
+
+Verify generated proof from file & hash:
+
+`./target/release/miden verify --program-hash "c8653f31a1098e1b83c5d4972ec544cac00aa784bba18b5a9db7478977d38e68" --proof miden/examples/fib/fib.proof `
+
+
+
+
 ## Overview
 Miden VM is a zero-knowledge virtual machine written in Rust. For any program executed on Miden VM, a STARK-based proof of execution is automatically generated. This proof can then be used by anyone to verify that the program was executed correctly without the need for re-executing the program or even knowing the contents of the program.
 

@@ -28,3 +28,5 @@ solana-program = "1.15.2"
 hex = { version = "0.4.3", features = ["serde"] }
 vm-core = { package = "miden-core", path = "../core", version = "0.3", default-features = false }
 winterfell = { package = "winter-verifier", version = "0.4.2", default-features = false }
+winter-crypto = "0.4.2"
+winter-utils = "0.4.2"

@@ -6,6 +6,8 @@ use vm_core::{utils::collections::Vec, ProgramOutputs};
 use vm_core::Felt;
 
 use winterfell::VerifierError;
+use winter_utils::{Deserializable, SliceReader};
+
 use bytemuck::{Pod, Zeroable};
 use hex;
 
@@ -32,7 +34,15 @@ use solana_program::{
 // ================================================================================================
 
 pub use assembly;
+//pub use crypto::hash::rescue::rp64_256::digest::ElementDigest;
+//use vm_core::ProgramOutputs;
+//use vm_core::{chiplets::hasher::Digesty, Program, ProgramInputs};
 pub use vm_core::chiplets::hasher::Digest;
+//pub use vm_core::chiplets::hasher::Digest::read_from;
+
+//use winter_crypto::hash::rescue::rp64_256::digest::ElementDigest;
+use winter_crypto::Digest;
+
 pub use winterfell::StarkProof;
 
 use bytemuck;
@@ -103,8 +113,11 @@ pub fn process_instruction(
     //let program_hash = ElementDigest::from_slice(&program_hash2);
     //let program_hash= Digest::read_from("c8653f31a1098e1b83c5d4972ec544cac00aa784bba18b5a9db7478977d38e68");
     let program_hash_string = "c8653f31a1098e1b83c5d4972ec544cac00aa784bba18b5a9db7478977d38e68";
-    let program_hash_bytes = hex::decode(program_hash_string);
-    let proghash = Digest::from(program_hash_bytes);
+    let program_hash_bytes = hex::decode(program_hash_string).unwrap();
+    let mut program_hash_slice = SliceReader::new(&program_hash_bytes);
+    let proghash = Digest::read_from(&mut program_hash_slice)
+        .map_err(|err| format!("Failed to deserialize program hash from bytes - {}", err))?;
+    //let proghash = Digest::from(program_hash_bytes);
     let inputs: &[u64] = &[1, 1];
     // The account must be owned by the program in order to modify its data
     if account.owner != program_id {

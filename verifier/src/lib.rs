@@ -103,7 +103,7 @@ pub fn process_instruction(
     let accts = account;
     //let accts: &AccountInfo = "7fkcbALYxj5BDq6ZDtWF2hvLMx5K4jTKUrWE4eaxvgoE"; //proof deployed on devnet
     //let raw_proof = bytemuck::try_from_bytes(accts.data.borrow()) //.unwrap();
-    let slice = *accts.data.borrow();
+    let slice = &*accts.data.borrow();
     //let raw_proof = bytemuck::try_from_bytes(&slice).unwrap();
     let my_proof = StarkProof::from_bytes(slice).unwrap();
     //let mut my_proof = StkProof::try_from_slic(&accts.data.borrow())?;

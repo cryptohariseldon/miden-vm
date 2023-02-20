@@ -3,8 +3,11 @@
 use air::{ProcessorAir, PublicInputs};
 use core::fmt;
 use vm_core::{utils::collections::Vec, ProgramOutputs};
+use vm_core::Felt;
+
 use winterfell::VerifierError;
 use bytemuck::{Pod, Zeroable};
+use hex;
 
 //use rescue::rp64::Element;
 //use rescue::rp64::params::MDS;
@@ -58,7 +61,7 @@ use bytemuck;
 /// Returns an error if the provided proof does not prove a correct execution of the program.
 
 // Declare and export the program's entrypoint
-entrypoint!(process_instruction("c8653f31a1098e1b83c5d4972ec544cac00aa784bba18b5a9db7478977d38e68"));
+entrypoint!(process_instruction);
 
 // Program entrypoint's implementation
 //#[derive(Copy, Clone, Pod, Zeroable)]
@@ -70,7 +73,6 @@ pub struct StkProof{
 pub fn process_instruction(
     program_id: &Pubkey, // Public key of the account the hello world program was loaded into
     accounts: &[AccountInfo], // The account storing the Proof Data
-    program_hash: Digest,
     _instruction_data: &[u8],// String
 ) -> ProgramResult {
     msg!("Zilch verification program entrypoint");
@@ -92,14 +94,17 @@ pub fn process_instruction(
     //let accts: &AccountInfo = "7fkcbALYxj5BDq6ZDtWF2hvLMx5K4jTKUrWE4eaxvgoE"; //proof deployed on devnet
     //let raw_proof = bytemuck::try_from_bytes(accts.data.borrow()) //.unwrap();
     let slice = *accts.data.borrow();
-    let raw_proof = bytemuck::try_from_bytes(&slice).unwrap();
-    let my_proof = StarkProof::from_bytes(raw_proof).unwrap();
+    //let raw_proof = bytemuck::try_from_bytes(&slice).unwrap();
+    let my_proof = StarkProof::from_bytes(slice).unwrap();
     //let mut my_proof = StkProof::try_from_slic(&accts.data.borrow())?;
     //let program_hash = "c8653f31a1098e1b83c5d4972ec544cac00aa784bba18b5a9db7478977d38e68";
     //let program_hash = Element:from_slice("c8653f31a1098e1b83c5d4972ec544cac00aa784bba18b5a9db7478977d38e68");
     //let program_hash_bytes = hex::from_hex(program_hash_str).unwrap();
     //let program_hash = ElementDigest::from_slice(&program_hash2);
-    //let program_hash= Digest::from_slice("c8653f31a1098e1b83c5d4972ec544cac00aa784bba18b5a9db7478977d38e68");
+    //let program_hash= Digest::read_from("c8653f31a1098e1b83c5d4972ec544cac00aa784bba18b5a9db7478977d38e68");
+    let program_hash_string = "c8653f31a1098e1b83c5d4972ec544cac00aa784bba18b5a9db7478977d38e68";
+    let program_hash_bytes = hex::decode(program_hash_string);
+    let proghash = Digest::from(program_hash_bytes);
     let inputs: &[u64] = &[1, 1];
     // The account must be owned by the program in order to modify its data
     if account.owner != program_id {
@@ -112,7 +117,7 @@ pub fn process_instruction(
     let stack1 : Vec<u64> = Vec::from([8911120806959712300, 11112721240812633725, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     let ofl1: Vec<u64> = [].to_vec();
     let outputs = &ProgramOutputs::new(stack1, ofl1);
-    let mut outcome = verify(program_hash, inputs, outputs, my_proof);
+    let mut outcome = verify(proghash, inputs, outputs, my_proof);
 
     // Increment and store the number of times the account has been greeted
     //let mut greeting_account = GreetingAccount::try_from_slice(&account.data.borrow())?;

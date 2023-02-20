@@ -4,6 +4,8 @@ use air::{ProcessorAir, PublicInputs};
 use core::fmt;
 use vm_core::{utils::collections::Vec, ProgramOutputs};
 use winterfell::VerifierError;
+use bytemuck::{Pod, Zeroable};
+
 
 // EXPORTS
 // ================================================================================================
@@ -32,6 +34,9 @@ pub use winterfell::StarkProof;
 ///
 /// # Errors
 /// Returns an error if the provided proof does not prove a correct execution of the program.
+pub mod entrypoint;
+pub mod processor;
+
 pub fn verify(
     program_hash: Digest,
     stack_inputs: &[u64],

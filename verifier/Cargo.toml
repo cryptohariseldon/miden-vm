@@ -12,10 +12,8 @@ edition = "2021"
 rust-version = "1.62"
 
 [lib]
-bench = false
-doctest = false
 name = "zilch_verifier"
-crate-type = ["cdylib", "lib"] 
+crate-type = ["cdylib", "lib"]
 
 [features]
 default = ["std"]

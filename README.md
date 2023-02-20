@@ -14,15 +14,36 @@ install as executable:
 
 `cargo build --release --features executable`
 
+For the fib8 computation, the program hash is:
+`c8653f31a1098e1b83c5d4972ec544cac00aa784bba18b5a9db7478977d38e68`
+The compute seeker will post this hash as a compute request, on chain.
+
+Any Provider (Bob) can then complete and prove the computation, and claim the reward.
 Generate proof for fib-8 to file:
 
 `./target/release/miden prove -a miden/examples/fib/fib.masm -n 1    `
+
+The generated proof files are stored in iden/examples/fib as :
+fib.proof
+fib.inputs
+fib.outputs
+
+Bob must commit the proof addresses on chain, as follows:
+
+
+Next, bob and link them to the compute request, to claim the reward. He can use the Zilch Client to do so. Bob will need to
+
+
 
 
 Verify generated proof from file & hash:
 
 `./target/release/miden verify --program-hash "c8653f31a1098e1b83c5d4972ec544cac00aa784bba18b5a9db7478977d38e68" --proof miden/examples/fib/fib.proof `
 
+
+./target/release/miden verify --program-hash "c8653f31a1098e1b83c5d4972ec544cac00aa784bba18b5a9db7478977d38e68" --proof /Users/dm/Documents/zilch_solana/custom-miden/Zilch-monorepo/fibproof/onchain_fib_trace2.proof
+
+GyS3HSjCQwU2sGsySvhL9Fa2bC8VufakoW4TpB5Bdfao
 
 
 
